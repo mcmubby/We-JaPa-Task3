@@ -2,12 +2,12 @@ const fs = require('fs');
 const path = require('path')
 
 function replacer(name, val) {
+    
     if(val === '' || val==='-' || val ==='N/A'){
-        return undefined;}
-    else {
+        return undefined;
+    }else {
         return val;
     }
-    
 };
 
 function arrayCleaner(dClean){
@@ -20,8 +20,12 @@ function arrayCleaner(dClean){
 }
 
 cleanData = (pData) => {
+    for (const key in pData) {
+        if (Array.isArray(pData[key])) {
+            arrayCleaner(pData[key]);
+        }
+    }
     
-    arrayCleaner(pData.hobbies);
     fs.writeFile(path.join(__dirname, 'Response.txt'), JSON.stringify(pData, replacer, 2), (err)=>{
         if(err){console.log(err);}
     })
